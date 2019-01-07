@@ -1,0 +1,32 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background: #f0f2f3
+}
+
+#app {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.login {
+  padding-top: 60px;
+  height: 100%;
+  width: 100%;
+  background: white
+}
+
+.account {
+  padding-top: 65px;
+  height: 100%;
+  width: 100%;
+}
+
+.explore {
+  padding-top: 60px;
+  width: 100%;
+  background: whitesmoke
+}
