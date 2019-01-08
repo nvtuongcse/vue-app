@@ -39,7 +39,7 @@
               <figcaption>
                 <div class="fig-author-figure-title">{{friend.name}}</div>
                 <div class="option">
-                  <img src="../assets/checked.png" class="icon" @click="acceptFriend" >
+                  <img src="../assets/checked.png" class="icon" @click="acceptFriend(friend._id)" >
                   <img src="../assets/cancel.png" class="icon" @click="decideFriend" >
                 </div>
               </figcaption>
@@ -152,11 +152,29 @@ export default {
         return error;
       }
     },
-    async acceptFriend(){
-
+    async acceptFriend(_id){
+      try {
+        const res = await axios.post(
+          "http://localhost:3000/graphql",
+          {
+            query: `mutation { userMutation { acceptFriendRequest(record: {userId: "${_id}"})}}`
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              authorization: this.$store.state.user.token
+            }
+          }
+        );
+        if (!res.data.data.userQuery.profileFindOne)
+          this.$toasted.error(res.data.errors[0].message);
+        else this.profile = res.data.data.userQuery.profileFindOne;
+      } catch (error) {
+        return error;
+      }
     },
     async decideFriend(){
-      
+
     }
 
   },
