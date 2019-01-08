@@ -7,6 +7,8 @@ import Explore from "./components/Explore.vue";
 import Login from "./components/Login.vue";
 import Account from "./components/Account.vue";
 import NewPost from "./components/NewPost.vue";
+import FindFriends from "./components/FindFriends.vue";
+import ViewAccount from "./components/ViewAccount.vue";
 import store from "./store";
 import VueLS from "vue-localstorage";
 import VueToasted from "vue-toasted";
@@ -31,13 +33,30 @@ const router = new VueRouter({
   routes: [
     { path: "/", component: Explore, meta: { requiresAuth: true } },
     { path: "/login", component: Login },
-    { path: "/account", component: Account, meta: { requiresAuth: true } },
-    { path: "/new-post", component: NewPost, meta: { requiresAuth: true } }
+    {
+      path: "/account",
+      component: Account,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: "/account/:profileId",
+      component: ViewAccount,
+      meta: { requiresAuth: true }
+    },
+    { path: "/new-post", component: NewPost, meta: { requiresAuth: true } },
+    {
+      path: "/find-friends",
+      component: FindFriends,
+      meta: { requiresAuth: true }
+    }
   ]
 });
 
 router.beforeEach((to, from, next) => {
-  if (!store.state.user.token && to.matched.some(route => route.meta.requiresAuth)) {
+  if (
+    !store.state.user.token &&
+    to.matched.some(route => route.meta.requiresAuth)
+  ) {
     next({ path: "/login" });
   } else if (
     store.state.user.token &&

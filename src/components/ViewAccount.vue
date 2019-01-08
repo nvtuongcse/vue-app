@@ -6,18 +6,7 @@
       :nFriends="profile.friends.length"
       :nPosts="profile.posts.length"
       :detail="profile.decription"
-      v-show="showProfile"
     ></profile>
-    <edit-profile
-      :nickName="profile.name"
-      :fullName="profile.fullName"
-      :nFriends="profile.friends.length"
-      :nPosts="profile.posts.length"
-      :detail="profile.decription"
-      v-show="!showProfile"
-      save-profile="saveProfile"
-    ></edit-profile>
-    <img class="edit-button" src="../assets/new-file.png" @click="editProfile">
     <div class="row">
       <div class="posts" v-show="showPostList">
         <ul>
@@ -27,25 +16,6 @@
         </ul>
       </div>
       <div class="friends" v-show="showFriendList">
-        <ul>
-          <li v-for="friend in profile.pendingFriends" v-bind:key="friend._id">
-            <figure class="fir-image-figure">
-              <img
-                class="fir-author-image fir-clickcircle"
-                src="https://fir-rollup.firebaseapp.com/de-sm.jpg"
-                alt="David East - Author"
-                @click="viewProfile(friend._id)"
-              >
-              <figcaption>
-                <div class="fig-author-figure-title">{{friend.name}}</div>
-                <div class="option">
-                  <img src="../assets/checked.png" class="icon" @click="acceptFriend" >
-                  <img src="../assets/cancel.png" class="icon" @click="decideFriend" >
-                </div>
-              </figcaption>
-            </figure>
-          </li>
-        </ul>
         <ul>
           <li v-for="friend in profile.friends" v-bind:key="friend._id">
             <div class="friend-container">
@@ -62,7 +32,6 @@
 <script>
 /*eslint-disable*/
 import Profile from "./Profile.vue";
-import EditProfile from "./EditProfile.vue";
 import Post from "./Post.vue";
 import axios from "axios";
 export default {
@@ -72,7 +41,6 @@ export default {
   },
   components: {
     Profile,
-    EditProfile,
     Post
   },
   data() {
@@ -84,59 +52,22 @@ export default {
         posts: [],
         friends: []
       },
-      floatMenu: true,
-      showProfile: true,
       showFriendList: true,
-      showPostList: true,
-      edit: "Edit"
+      showPostList: true
     };
   },
   async mounted() {
     this.getAccoutData();
-    this.$root.$on("sendData", ({ name, fullName, decription }) => {
-      this.profile = {
-        ...this.profile,
-        name,
-        fullName,
-        decription
-      };
-      this.$store.dispatch("updateProfile", {
-        record: {
-          name,
-          fullName,
-          decription
-        },
-        router: this.$router,
-        ls: this.$localStorage,
-        toast: this.$toasted
-      });
-    });
   },
   methods: {
-    viewProfile(_id) {
-      this.$router.push(`/account/${_id}`);
-    },
-    editProfile() {
-      this.showProfile = !this.showProfile;
-      if (this.edit == "Save") {
-        this.edit = "Edit";
-        this.$root.$emit("saveProfile");
-      } else {
-        this.edit = "Save";
-        this.$root.$emit("editProfile", {
-          name: this.profile.name,
-          fullName: this.profile.fullName,
-          detail: this.profile.decription
-        });
-      }
-    },
     async getAccoutData() {
       try {
         const res = await axios.post(
           "http://localhost:3000/graphql",
           {
-            query:
-              "{userQuery {profileFindOne {name fullName pendingFriends{ _id name fullName} decription friends{ _id name fullName decription } posts{title imgUrl decription content pravicy}}}}"
+            query: `{ userQuery { profilePaginantion(filter: {_id: "${
+              this.$router.params.profileId
+            }"}) { items { _id name decription fullName userId } } } }`
           },
           {
             headers: {
@@ -145,23 +76,12 @@ export default {
             }
           }
         );
-        if (!res.data.data.userQuery.profileFindOne)
-          this.$toasted.error(res.data.errors[0].message);
-        else this.profile = res.data.data.userQuery.profileFindOne;
+        if (res.data.errors) this.$toasted.error(res.data.errors[0].message);
+        this.profile = res.data.data.userQuery.profilePaginantion.items;
       } catch (error) {
         return error;
       }
-    },
-    async acceptFriend(){
-
-    },
-    async decideFriend(){
-      
     }
-
-  },
-  deactivated() {
-    this.$root.$off(["sendData", "saveProfile", "editProfile"]);
   }
 };
 </script>

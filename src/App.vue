@@ -20,7 +20,7 @@
     <router-view></router-view>
     <div class="float-menu" v-show="this.$store.state.user.token">
       <img class="float-button" type="image" @click="addPost" src="./assets/pencil.png">
-      <button class="float-button" v-show="floatMenu">+</button>
+      <button class="float-button" v-show="floatMenu" @click="findFriend">+</button>
       <button class="float-button" @click="floatMenu=!floatMenu">+</button>
     </div>
   </div>
@@ -31,7 +31,7 @@ export default {
   name: "app",
   data() {
     return {
-      floatMenu: false,
+      floatMenu: false
     };
   },
   methods: {
@@ -40,6 +40,9 @@ export default {
     },
     addPost() {
       this.$router.push("/new-post");
+    },
+    findFriend() {
+      this.$router.push("/find-friends");
     }
   }
 };
