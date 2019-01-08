@@ -20,9 +20,12 @@ body {
 }
 
 .account {
-  padding-top: 65px;
-  height: 100%;
+  padding-top: 56px;
   width: 100%;
+}
+
+textarea {
+  resize: none;
 }
 
 .explore {

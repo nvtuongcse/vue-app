@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import Explore from "./components/Explore.vue";
 import Login from "./components/Login.vue";
 import Account from "./components/Account.vue";
-import NewPost from './components/NewPost.vue';
+import NewPost from "./components/NewPost.vue";
 import store from "./store";
 import VueLS from "vue-localstorage";
 import VueToasted from "vue-toasted";
@@ -37,11 +37,13 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (
-    to.matched.some(route => route.meta.requiresAuth) &&
-    !store.state.user.token
-  ) {
+  if (!store.state.user.token && to.matched.some(route => route.meta.requiresAuth)) {
     next({ path: "/login" });
+  } else if (
+    store.state.user.token &&
+    to.path.toLocaleLowerCase() === "/login"
+  ) {
+    next({ path: "/" });
   } else {
     next();
   }

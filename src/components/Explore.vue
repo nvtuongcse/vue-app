@@ -36,7 +36,7 @@ export default {
       try {
         const res = await axios.post("http://localhost:3000/graphql", {
           query:
-            "{userQuery {postPaginantion {items {title imgUrl decription content pravicy updatedAt createdAt}}}}"
+            "{userQuery {postPaginantion(sort: CREATEDAT_DESC) {items {title imgUrl decription content pravicy updatedAt createdAt}}}}"
         }, {headers: {
                     'Content-Type': 'application/json',
                     'authorization': this.$store.state.user.token

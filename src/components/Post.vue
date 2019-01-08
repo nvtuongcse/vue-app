@@ -42,15 +42,6 @@ export default {
   border-bottom: 1px solid gray;
 }
 
-.right-posts .post {
-  position: relative;
-  border: 1px solid gray;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  width: 300px;
-  height: auto;
-  padding: 10px 10px 10px 10px;
-  border-radius: 1px;
-}
 
 h4 {
   text-align: left;
@@ -63,11 +54,11 @@ h4 {
   font-weight: bold;
   color: black;
 }
-img.thumbnail {
+.thumbnail {
   padding: 0;
   margin: 0;
   width: 100%;
-  height: 200px;
+  height: auto;
 }
 
 p {

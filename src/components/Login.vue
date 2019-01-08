@@ -98,6 +98,7 @@ h6 {
 
 a:hover {
  cursor: pointer;
+ color: aquamarine
 }
 
 .col-75 a {

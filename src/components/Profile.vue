@@ -1,13 +1,13 @@
 <template>
   <div class="profile">
     <div class="container">
-      <div>
+      <div class="avatar-container">
         <img class="avatar" src="https://www.w3schools.com/w3images/falls2.jpg" alt="avatar">
       </div>
-      <div class="decription">
+      <div class="name">
         <h2>{{nickName}}</h2>
         <h5>{{fullName}}</h5>
-        <button v-show="isSelf" >Follow</button>
+        <button v-show="isSelf">Add Friend!</button>
       </div>
       <div class="detail">
         <p>{{detail}}</p>
@@ -31,8 +31,7 @@
 export default {
   name: "Profile",
   data() {
-    return {
-    };
+    return {};
   },
   props: {
     isSelf: Boolean,
@@ -47,12 +46,36 @@ export default {
 
 <style scoped>
 .profile {
-  display: block;
-  width: 100%;
+  min-width: 100%;
   height: auto;
   box-shadow: 2px 2px 2px gray;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+}
+.container {
+  min-width: 100%;
+  display: flex;
+}
+.detail {
+  float: left;
+  text-align: center;
+  width: 65%;
+  position: relative;
+}
+.avatar-container {
+  float: left;
+  position: relative;
+  margin: auto;
+  width: 30%;
+  height: auto;
+  padding: 5px;
+}
+.name {
+  float: left;
+  text-align: left;
+  width: 20%;
+  margin: auto;
+  position: relative;
 }
 
 .follow {
@@ -63,23 +86,21 @@ export default {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-.n-posts{
+.n-posts {
   width: 75%;
-  margin: 10px;
   text-align: center;
 }
 .n-friends {
   width: 25%;
-  margin: 10px;
   text-align: center;
 }
 
 h3,
 h4 {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   margin: auto;
   padding: 0px !important;
-  color:gray !important;
+  color: gray !important;
 }
 
 .line {
@@ -101,6 +122,7 @@ button {
   margin: 0;
   padding: 5px;
 }
+
 button:active {
   color: gray;
   background: white;
@@ -110,56 +132,42 @@ button:active {
 }
 
 img.avatar {
-  float: left;
+  padding: 5px;
+  display: block;
   border-radius: 50%;
   border: 1px solid gray;
   width: 120px;
   height: 120px;
-  margin-left: 120px;
-  margin-right: 50px;
-}
-
-.container {
-  margin: auto;
-  width: 100%;
-  height: 150px;
-  vertical-align: middle;
-}
-
-.decription {
-  text-align: left;
-  float: left;
-  width: 25%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 h3 {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 15px;
 }
 
-h2, h5 {
+h2,
+h5 {
   margin: auto;
   padding: auto;
 }
 h4 {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: lighter;
 }
 
 p {
-  margin: auto;
-  padding-top: 10px;
-  display: flex;
+  margin: 0px;
+  position: absolute;
   text-align: left;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
   font-family: monospace;
   font-size: 12px;
   color: gray;
-  width: auto;
-  height: auto;
-}
-
-img .avatar {
-  width: 120px;
-  height: 120px;
+  width: 300px;
 }
 </style>

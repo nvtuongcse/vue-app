@@ -18,12 +18,11 @@
       </li>
     </ul>
     <router-view></router-view>
-    <div class="float-menu">
-      <img class="float-button" type="image" @click="addPost" src="./assets/pencil.png" >
+    <div class="float-menu" v-show="this.$store.state.user.token">
+      <img class="float-button" type="image" @click="addPost" src="./assets/pencil.png">
       <button class="float-button" v-show="floatMenu">+</button>
       <button class="float-button" @click="floatMenu=!floatMenu">+</button>
     </div>
-    
   </div>
 </template>
 
@@ -32,15 +31,15 @@ export default {
   name: "app",
   data() {
     return {
-      floatMenu: false
-    }
+      floatMenu: false,
+    };
   },
   methods: {
     logout() {
       this.$store.commit("logOut", { ls: this.$localStorage });
     },
-    addPost(){
-      this.$router.push('/new-post')
+    addPost() {
+      this.$router.push("/new-post");
     }
   }
 };
@@ -68,15 +67,14 @@ li a:hover {
   color: gray;
 }
 
-
 .float-button {
-  z-index: 1;
   text-align: center;
   border-radius: 50%;
   width: 35px;
   height: 35px;
   font-size: 18px;
   color: white;
+  background: gray;
   margin: 5px;
   border: none;
 }

@@ -17,8 +17,7 @@
       v-show="!showProfile"
       save-profile="saveProfile"
     ></edit-profile>
-    <button class="edit-button" @click="editProfile">{{edit}}</button>
-
+    <input type="image" class="edit-button" src='' @click="editProfile">
     <div class="row">
       <div class="posts" v-show="showPostList">
         <ul>
@@ -132,8 +131,8 @@ export default {
       }
     }
   },
-  deactivated(){
-    this.$root.$off(['sendData', 'saveProfile', 'editProfile']);
+  deactivated() {
+    this.$root.$off(["sendData", "saveProfile", "editProfile"]);
   }
 };
 </script>
@@ -146,9 +145,9 @@ export default {
   clear: both;
 }
 
-
 .account {
   position: relative;
+  min-width: 100%;
 }
 .edit-button {
   position: absolute;
