@@ -11,17 +11,24 @@
       <div class="posts" v-show="showPostList">
         <ul>
           <li v-for="post in profile.posts" v-bind:key="post.id">
-            <post :title="post.title" :shortContent="post.content" :imgScr="post.imgUrl"></post>
+            <post :title="post.title" :content="post.content" :imgUrl="post.imgUrl"></post>
           </li>
         </ul>
       </div>
       <div class="friends" v-show="showFriendList">
         <ul>
           <li v-for="friend in profile.friends" v-bind:key="friend._id">
-            <div class="friend-container">
-              <img class="sm-avatar" src="https://www.w3schools.com/w3images/falls2.jpg">
-              <h6>{{friend.fullName}}</h6>
-            </div>
+            <figure class="fir-image-figure">
+              <img
+                class="fir-author-image fir-clickcircle"
+                src="https://fir-rollup.firebaseapp.com/de-sm.jpg"
+                alt="David East - Author"
+                @click="viewProfile(friend._id)"
+              >
+              <figcaption>
+                <div class="fig-author-figure-title">{{friend.name}}</div>
+              </figcaption>
+            </figure>
           </li>
         </ul>
       </div>
@@ -59,15 +66,23 @@ export default {
   async mounted() {
     this.getAccoutData();
   },
+  watch: {
+    '$router' (to, from) {
+      this.getAccoutData();
+    }
+  },
   methods: {
+    viewProfile(_id) {
+      this.$router.push(`/account/${_id}`);
+    },
     async getAccoutData() {
       try {
         const res = await axios.post(
           "http://localhost:3000/graphql",
           {
             query: `{ userQuery { profilePaginantion(filter: {_id: "${
-              this.$router.params.profileId
-            }"}) { items { _id name decription fullName userId } } } }`
+              this.$router.history.current.params.profileId
+            }"}) { items { _id name decription fullName userId friends{_id name fullName userId} posts{_id title content} } } } }`
           },
           {
             headers: {
@@ -77,7 +92,7 @@ export default {
           }
         );
         if (res.data.errors) this.$toasted.error(res.data.errors[0].message);
-        this.profile = res.data.data.userQuery.profilePaginantion.items;
+        this.profile = res.data.data.userQuery.profilePaginantion.items[0];
       } catch (error) {
         return error;
       }

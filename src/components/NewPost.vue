@@ -26,6 +26,7 @@
 import axios from "axios";
 import firebase from "firebase";
 
+
 var config = {
   apiKey: "AIzaSyBXKNNFRILZTBM6-ef0sC7DEub5-cj5nsg",
   authDomain: "vueapp-7df9f.firebaseapp.com",

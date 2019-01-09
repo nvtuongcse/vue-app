@@ -9,10 +9,13 @@ import Account from "./components/Account.vue";
 import NewPost from "./components/NewPost.vue";
 import FindFriends from "./components/FindFriends.vue";
 import ViewAccount from "./components/ViewAccount.vue";
+import ViewPost from "./components/ViewPost.vue";
 import store from "./store";
 import VueLS from "vue-localstorage";
 import VueToasted from "vue-toasted";
 const JWTSECRETKEY = "vueappjwtkey";
+
+
 
 Vue.config.productionTip = false;
 Vue.use(VueToasted, {
@@ -33,6 +36,11 @@ const router = new VueRouter({
   routes: [
     { path: "/", component: Explore, meta: { requiresAuth: true } },
     { path: "/login", component: Login },
+    {
+      path: "/post/:postId",
+      component: ViewPost,
+      meta: { requiresAuth: true }
+    },
     {
       path: "/account",
       component: Account,

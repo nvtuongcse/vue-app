@@ -1,21 +1,26 @@
 <template>
   <div class="post">
     <h4>{{title}}</h4>
-    <img class="thumbnail" :src="imgScr" @click="onClick">
-    <p>{{shortContent}}</p>
+    <img class="thumbnail" :src="imgUrl" @click="onClick">
+    <p>{{content}}</p>
+    <ul>
+      <li></li>
+    </ul>
     <div class="w3-modal" v-bind:style="mStyle" @click="onClick">
-      <img :src="imgScr">
+      <img :src="imgUrl">
     </div>
   </div>
 </template>
 <script>
+/*eslint-disable*/
+import axios from "axios";
 export default {
   name: "Post",
   props: {
-    id: Number,
-    imgScr: String,
+    _id: Number,
+    imgUrl: String,
     title: String,
-    shortContent: String
+    content: String
   },
   data() {
     return {
@@ -41,7 +46,6 @@ export default {
   padding: 10px 10px 10px 10px;
   border-bottom: 1px solid gray;
 }
-
 
 h4 {
   text-align: left;

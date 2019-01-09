@@ -22,7 +22,7 @@
       <div class="posts" v-show="showPostList">
         <ul>
           <li v-for="post in profile.posts" v-bind:key="post.id">
-            <post :title="post.title" :shortContent="post.content" :imgScr="post.imgUrl"></post>
+            <post :title="post.title" :content="post.content" :imgUrl="post.imgUrl" @click="viewPost(post._id)"></post>
           </li>
         </ul>
       </div>
@@ -39,8 +39,8 @@
               <figcaption>
                 <div class="fig-author-figure-title">{{friend.name}}</div>
                 <div class="option">
-                  <img src="../assets/checked.png" class="icon" @click="acceptFriend(friend._id)" >
-                  <img src="../assets/cancel.png" class="icon" @click="decideFriend" >
+                  <img src="../assets/checked.png" class="icon" @click="acceptFriend(friend._id)">
+                  <img src="../assets/cancel.png" class="icon" @click="decideFriend">
                 </div>
               </figcaption>
             </figure>
@@ -48,10 +48,17 @@
         </ul>
         <ul>
           <li v-for="friend in profile.friends" v-bind:key="friend._id">
-            <div class="friend-container">
-              <img class="sm-avatar" src="https://www.w3schools.com/w3images/falls2.jpg">
-              <h6>{{friend.fullName}}</h6>
-            </div>
+            <figure class="fir-image-figure">
+              <img
+                class="fir-author-image fir-clickcircle"
+                src="https://fir-rollup.firebaseapp.com/de-sm.jpg"
+                alt="David East - Author"
+                @click="viewProfile(friend._id)"
+              >
+              <figcaption>
+                <div class="fig-author-figure-title">{{friend.name}}</div>
+              </figcaption>
+            </figure>
           </li>
         </ul>
       </div>
@@ -136,7 +143,7 @@ export default {
           "http://localhost:3000/graphql",
           {
             query:
-              "{userQuery {profileFindOne {name fullName pendingFriends{ _id name fullName} decription friends{ _id name fullName decription } posts{title imgUrl decription content pravicy}}}}"
+              "{userQuery {profileFindOne {name fullName pendingFriends{ _id name fullName} decription friends{ _id name fullName decription } posts{_id title imgUrl decription content pravicy}}}}"
           },
           {
             headers: {
@@ -152,7 +159,7 @@ export default {
         return error;
       }
     },
-    async acceptFriend(_id){
+    async acceptFriend(_id) {
       try {
         const res = await axios.post(
           "http://localhost:3000/graphql",
@@ -166,15 +173,32 @@ export default {
             }
           }
         );
-        if (!res.data.data.userQuery.profileFindOne)
-          this.$toasted.error(res.data.errors[0].message);
-        else this.profile = res.data.data.userQuery.profileFindOne;
+        if(!res.data.errors) this$toasted.success('You are now friend!')
       } catch (error) {
         return error;
       }
     },
-    async decideFriend(){
-
+    async decideFriend() {
+      try {
+        const res = await axios.post(
+          "http://localhost:3000/graphql",
+          {
+            query: `mutation { userMutation { decideFriendRequest(record: {userId: "${_id}"})}}`
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              authorization: this.$store.state.user.token
+            }
+          }
+        );
+        if(!res.data.errors) this$toasted.success('Removed!')
+      } catch (error) {
+        return error;
+      }
+    },
+    viewPost(_id){
+      this.$router.push(`/post/${_id}`);
     }
 
   },
