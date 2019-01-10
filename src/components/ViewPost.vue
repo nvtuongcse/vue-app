@@ -15,18 +15,21 @@
 </template>
 <script>
 /*eslint-disable*/
-import { socket } from "../socketIO";
 import axios from "axios";
+import io from "socket.io-client";
 
 export default {
   name: "ViewPost",
-  mounted() {
-    this.getData();
-    socket.on("connect", function() {
-      console.log("On connect")
-      socket.emit("join-room", this.post._id);
-      socket.on("addedComment", post => {
-        console.log("On add comment")
+  async mounted() {
+    console.log("On mounted");
+    await this.getData();
+    let channel = this.post._id;
+    const postSocket = io.connect('localhost:3000/post', {forceNew: true})
+    this.postSocket = postSocket;
+    postSocket.on("connect", () => {
+      console.log(channel);
+      postSocket.emit("join-room", channel);
+      postSocket.on("comment-added", post => {
         this.post = post;
       });
     });
@@ -38,9 +41,9 @@ export default {
         title: "",
         imgUrl: "",
         content: "",
-        comments: [],
+        comments: []
       },
-      comment: "",
+      comment: ""
     };
   },
   methods: {
@@ -51,7 +54,7 @@ export default {
           {
             query: `{ userQuery { postFindOne(filter: {_id: "${
               this.$router.history.current.params.postId
-            }"}) { title imgUrl decription profileId content comments { profileId content _id } pravicy updatedAt createdAt } } }`
+            }"}) {_id title imgUrl decription profileId content comments { profileId content _id } pravicy updatedAt createdAt } } }`
           },
           {
             headers: {
@@ -65,12 +68,20 @@ export default {
         return error;
       }
     },
-    writeComment(){
-      if(this.comment != "")
-      socket.emit("addComment", {
-        comment: this.comment, profileId: this.$store.state.user.token, _id: this.post._id 
-      })
+    writeComment() {
+      if (this.comment != "")
+        this.postSocket.emit("add-comment", {
+          content: this.comment,
+          token: this.$store.state.user.token,
+          _id: this.post._id
+        });
     }
+  },
+  destroyed() {
+    console.log("on Destroyed");
+    // this.postSocket.emit('leave-room', this.post._id);
+    // this.postSocket.emit('disconnect')
+    this.postSocket.disconnect();
   }
 };
 </script>

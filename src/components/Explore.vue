@@ -4,14 +4,7 @@
       <div class="left-posts">
         <ul>
           <li v-for="post in posts" v-bind:key="post._id" @click="viewPost(post._id)">
-            <post :title="post.title" :content="post.content" :imgUrl="post.imgUrl"></post>
-          </li>
-        </ul>
-      </div>
-      <div class="right-posts">
-        <ul>
-          <li v-for="post in posts" v-bind:key="post.id">
-            <Post :content="post.title" :imgUrl="post.imgUrl"></Post>
+            <post :title="post.title" :content="post.content" :imgUrl="post.imgUrl" :createdAt="post.createdAt"></post>
           </li>
         </ul>
       </div>
@@ -22,7 +15,7 @@
 <script>
 /*eslint-disable*/
 import axios from "axios";
-import Post from "./Post";
+import Post from "./post/Post";
 export default {
   name: "Explore",
   components: {
