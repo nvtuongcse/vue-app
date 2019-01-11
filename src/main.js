@@ -9,7 +9,7 @@ import Account from "./components/Account.vue";
 import NewPost from "./components/NewPost.vue";
 import FindFriends from "./components/FindFriends.vue";
 import ViewAccount from "./components/ViewAccount.vue";
-import ViewPost from "./components/post/ViewPost.vue";
+import ViewPost from "./components/ViewPost.vue";
 import Post from "./components/post/ViewPost";
 import store from "./store";
 import VueLS from "vue-localstorage";

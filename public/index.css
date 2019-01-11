@@ -9,7 +9,7 @@ body {
   height: 100%;
   width: 100%;
   margin: 0;
-  background: #f0f2f3
+  background: #fff
 }
 
 #app {
@@ -37,5 +37,11 @@ textarea {
 .explore {
   padding-top: 60px;
   width: 100%;
-  background: whitesmoke
+  background: #fff
+}
+
+.viewpost {
+  height: 100%;
+  width: 100%;
+  background: white
 }

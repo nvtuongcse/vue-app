@@ -32,10 +32,12 @@
             </li>
           </ul>
         </div>
-        <form class="form-comment" action="writeComment" @submit.prevent="writeComment">
+        <div class="from-comment">
+        <form action="writeComment" @submit.prevent="writeComment">
           <input class="write-comment" type="text" v-model="comment">
           <input type="submit" style="display:none">
         </form>
+        </div>
       </div>
     </div>
   </div>
@@ -103,7 +105,6 @@ export default {
       }
     },
     writeComment() {
-      console.log("wskdjfasd");
       if (this.comment != "")
         this.postSocket.emit("add-comment", {
           content: this.comment,
@@ -120,7 +121,7 @@ export default {
   },
   computed: {
     createDate: function() {
-      const createdDate = new Date(this.createdAt);
+      const createdDate = new Date(this.post.createdAt);
       return moment(createdDate).format("MMM Do YY");
     }
   }
@@ -142,22 +143,7 @@ body {
   align-items: center;
   font-family: roboto;
 }
-.container {
-  position: relative;
-  height: 20%;
-}
 
-.comment-list {
-  height: 60%;
-  position: relative;
-  overflow: scroll;
-}
-
-.line-comment {
-  background: #9b999e;
-  margin: 0;
-  padding: 0;
-}
 h6 {
   margin: 0;
   padding: 0;
@@ -209,6 +195,45 @@ h6 {
   background-color: $white;
   color: $dark;
 }
+
+.container {
+  position: relative;
+  height: 20%;
+}
+
+.comment-list {
+  
+  max-height: 60%;
+  // float: left;
+  overflow: scroll;
+  &::after{
+    content: "";
+    clear: both;
+  }
+}
+
+.line-comment {
+  display: block;
+  
+  // float: left;
+  background: #9b999e;
+  margin: 0;
+  padding: 0;
+  &::after{
+    content: "";
+    clear: both;
+  }
+}
+
+.form-comment {
+  width: 100%;
+  text-align: center;
+  padding: 5px;
+  margin: 2px;
+  height: auto;
+
+}
+
 .post-right_body {
   line-height: 2;
   padding: 2em;
@@ -228,6 +253,7 @@ h6 {
 }
 .post-right_footer_date {
   text-transform: uppercase;
+  
   span {
     font-weight: 700;
   }

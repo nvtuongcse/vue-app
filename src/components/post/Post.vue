@@ -45,6 +45,7 @@ export default {
   computed: {
     createDate: function() {
       const createdDate = new Date(this.createdAt);
+      console.log(createdDate);
       return moment(createdDate).format("MMM Do YY");
     }
   }
@@ -63,13 +64,30 @@ export default {
 /* The card */
 .card
 	position : relative
-	height: 360px
-	width: 780px
+	height : 360px
+	width : 780px
 	margin : 20px auto
 	background-color : #FFF
-	-webkit-box-shadow: 10px 10px 93px 0px rgba(0,0,0,0.75)
-	-moz-box-shadow: 10px 10px 93px 0px rgba(0,0,0,0.75)
-	box-shadow: 10px 10px 93px 0px rgba(0,0,0,0.75)
+  :after 
+    bottom: -2px
+    right: 1px
+    width: 8px
+    height: 4px
+  :before
+    transition: all .15s linear 0s
+    content: ''
+    position: absolute
+    bottom: -4px
+    right: 2px
+    width: 4px
+    height: 4px
+    background-color: #404040
+    transform: rotate(45deg)
+    z-index: -1
+    
+
+
+
 
 /* Image on the left side */
 .thumbnail 
@@ -123,7 +141,7 @@ h1
 
 h2
 	padding-top : 8px
-	margin-right : 6px
+	margin-right : 10px
 	text-align : left
 	font-size : 0.8rem
 	color :white
