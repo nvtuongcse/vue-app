@@ -21,8 +21,14 @@
     <div class="row">
       <div class="posts" v-show="showPostList">
         <ul>
-          <li v-for="post in profile.posts" v-bind:key="post.id">
-            <post :title="post.title" :content="post.content" :imgUrl="post.imgUrl" @click="viewPost(post._id)"></post>
+          <li v-for="post in profile.posts" v-bind:key="post.id" @click="viewPost(post._id)">
+            <post 
+              :title="post.title" 
+              :content="post.content" 
+              :imgUrl="post.imgUrl" 
+              :createdAt="post.createdAt" 
+              >
+            </post>
           </li>
         </ul>
       </div>
@@ -70,7 +76,7 @@
 /*eslint-disable*/
 import Profile from "./Profile.vue";
 import EditProfile from "./EditProfile.vue";
-import Post from "./Post.vue";
+import Post from "./post/Post.vue";
 import axios from "axios";
 export default {
   name: "Account",
@@ -143,7 +149,7 @@ export default {
           "http://localhost:3000/graphql",
           {
             query:
-              "{userQuery {profileFindOne {name fullName pendingFriends{ _id name fullName} decription friends{ _id name fullName decription } posts{_id title imgUrl decription content pravicy}}}}"
+              "{userQuery {profileFindOne {name fullName pendingFriends{ _id name fullName} decription friends{ _id name fullName decription } posts{_id title imgUrl decription content pravicy createdAt}}}}"
           },
           {
             headers: {
@@ -197,9 +203,9 @@ export default {
         return error;
       }
     },
-    viewPost(_id){
-      this.$router.push(`/post/${_id}`);
-    }
+    viewPost(id) {
+      this.$router.push(`/post/${id}`);
+    },
 
   },
   deactivated() {

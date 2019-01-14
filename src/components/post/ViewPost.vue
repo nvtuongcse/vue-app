@@ -24,7 +24,7 @@
       </div>
       <div class="container">
         <div class="comment-list">
-          <ul>
+          <ul ref="listComment">
             <li class="line-comment" v-for="comment in post.comments" :key="comment._id">
               <div>
                 <h6>{{comment.content}}</h6>
@@ -32,11 +32,11 @@
             </li>
           </ul>
         </div>
-        <div class="from-comment">
-        <form action="writeComment" @submit.prevent="writeComment">
-          <input class="write-comment" type="text" v-model="comment">
-          <input type="submit" style="display:none">
-        </form>
+        <div class="form-comment">
+          <form action="writeComment" @submit.prevent="writeComment">
+            <input class="write-comment" type="text" v-model="comment">
+            <input type="submit" style="display:none">
+          </form>
         </div>
       </div>
     </div>
@@ -105,6 +105,7 @@ export default {
       }
     },
     writeComment() {
+      console.log(this.$refs);
       if (this.comment != "")
         this.postSocket.emit("add-comment", {
           content: this.comment,
@@ -202,11 +203,10 @@ h6 {
 }
 
 .comment-list {
-  
   max-height: 60%;
   // float: left;
   overflow: scroll;
-  &::after{
+  &::after {
     content: "";
     clear: both;
   }
@@ -214,12 +214,12 @@ h6 {
 
 .line-comment {
   display: block;
-  
+
   // float: left;
   background: #9b999e;
   margin: 0;
   padding: 0;
-  &::after{
+  &::after {
     content: "";
     clear: both;
   }
@@ -231,7 +231,6 @@ h6 {
   padding: 5px;
   margin: 2px;
   height: auto;
-
 }
 
 .post-right_body {
@@ -253,7 +252,7 @@ h6 {
 }
 .post-right_footer_date {
   text-transform: uppercase;
-  
+
   span {
     font-weight: 700;
   }

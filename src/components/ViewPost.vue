@@ -24,13 +24,14 @@
             <input type="submit" style="display:none">
           </form>
         </div>
-        <div class="post__right-footer">
+        <div class="post__right-footer" ref="listComment">
           <div class="list-comment">
-            <ul>
+            <ul ref="list">
               <li
                 class="line-comment"
                 v-for="comment in post.comments"
                 :key="comment._id"
+                ref="lineComment"
               >{{comment.content}}</li>
             </ul>
           </div>
@@ -61,6 +62,10 @@ export default {
       postSocket.emit("join-room", channel);
       postSocket.on("comment-added", post => {
         this.post = post;
+        this.$nextTick(() => {
+          this.$refs.listComment.scrollTop = 21 * this.post.comments.length;
+        });
+        this.comment = "";
       });
     });
   },
@@ -145,7 +150,7 @@ body {
 .post__left {
   top: -1rem;
   left: -1rem;
-  border-right: 0.5px solid rgba(128, 128, 128, 0.363);  
+  border-right: 0.5px solid rgba(128, 128, 128, 0.363);
   position: absolute;
   float: left;
   width: 20rem;
@@ -153,7 +158,7 @@ body {
   background: whitesmoke;
   text-align: center;
   position: relative;
-  box-shadow: 15px 10px 5px 0px gray
+  box-shadow: 15px 10px 5px 0px gray;
 }
 .post__right {
   display: inline-block;
@@ -238,6 +243,7 @@ body {
   line-height: 0;
   width: 25rem;
   margin: auto;
+  margin-bottom: 0.5rem; 
   height: 1rem;
 }
 .write-comment {
