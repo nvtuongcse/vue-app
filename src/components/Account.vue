@@ -22,13 +22,12 @@
       <div class="posts" v-show="showPostList">
         <ul>
           <li v-for="post in profile.posts" v-bind:key="post.id" @click="viewPost(post._id)">
-            <post 
-              :title="post.title" 
-              :content="post.content" 
-              :imgUrl="post.imgUrl" 
-              :createdAt="post.createdAt" 
-              >
-            </post>
+            <post
+              :title="post.title"
+              :content="post.content"
+              :imgUrl="post.imgUrl"
+              :createdAt="post.createdAt"
+            ></post>
           </li>
         </ul>
       </div>
@@ -45,8 +44,8 @@
               <figcaption>
                 <div class="fig-author-figure-title">{{friend.name}}</div>
                 <div class="option">
-                  <img src="../assets/checked.png" class="icon" @click="acceptFriend(friend._id)">
-                  <img src="../assets/cancel.png" class="icon" @click="decideFriend">
+                  <img src="../assets/checked.png" class="icon" @click="acceptFriend(friend)">
+                  <img src="../assets/cancel.png" class="icon" @click="decideFriend(friend)">
                 </div>
               </figcaption>
             </figure>
@@ -76,6 +75,7 @@
 /*eslint-disable*/
 import Profile from "./Profile.vue";
 import EditProfile from "./EditProfile.vue";
+import { remove } from "lodash";
 import Post from "./post/Post.vue";
 import axios from "axios";
 export default {
@@ -95,7 +95,8 @@ export default {
         fullName: "",
         decription: "",
         posts: [],
-        friends: []
+        friends: [],
+        pendingFriends: []
       },
       floatMenu: true,
       showProfile: true,
@@ -146,7 +147,7 @@ export default {
     async getAccoutData() {
       try {
         const res = await axios.post(
-          "http://localhost:3000/graphql",
+          "https://vue-app-bk-123.herokuapp.com/graphql",
           {
             query:
               "{userQuery {profileFindOne {name fullName pendingFriends{ _id name fullName} decription friends{ _id name fullName decription } posts{_id title imgUrl decription content pravicy createdAt}}}}"
@@ -165,12 +166,14 @@ export default {
         return error;
       }
     },
-    async acceptFriend(_id) {
+    async acceptFriend(friend) {
       try {
         const res = await axios.post(
-          "http://localhost:3000/graphql",
+          "https://vue-app-bk-123.herokuapp.com/graphql",
           {
-            query: `mutation { userMutation { acceptFriendRequest(record: {userId: "${_id}"})}}`
+            query: `mutation { userMutation { acceptFriendRequest(record: {userId: "${
+              friend._id
+            }"})}}`
           },
           {
             headers: {
@@ -179,17 +182,26 @@ export default {
             }
           }
         );
-        if(!res.data.errors) this$toasted.success('You are now friend!')
+        if (res.data.data.userMutation.acceptFriendRequest.message) {
+          this.profile.friends.push(friend);
+          remove(this.profile.pendingFriends, friend);
+          this.$toasted.success("You are now friend!");
+          return;
+        }
+        return this.$toasted.error(res.data.errors[0].message);
       } catch (error) {
+        this.$toasted.error(error.message);
         return error;
       }
     },
-    async decideFriend() {
+    async decideFriend(friend) {
       try {
         const res = await axios.post(
-          "http://localhost:3000/graphql",
+          "https://vue-app-bk-123.herokuapp.com/graphql",
           {
-            query: `mutation { userMutation { decideFriendRequest(record: {userId: "${_id}"})}}`
+            query: `mutation { userMutation { decideFriendRequest(record: {userId: "${
+              friend._id
+            }"})}}`
           },
           {
             headers: {
@@ -198,15 +210,19 @@ export default {
             }
           }
         );
-        if(!res.data.errors) this$toasted.success('Removed!')
+        if (res.data.data.userMutation.decideFriendRequest.message) {
+          remove(this.profile.pendingFriends, friend);
+          return this.$toasted.success("Removed!");
+        }
+        return this.$toasted.error(res.data.errors[0].message);
       } catch (error) {
+        this.$toasted.error(error.message);
         return error;
       }
     },
     viewPost(id) {
       this.$router.push(`/post/${id}`);
-    },
-
+    }
   },
   deactivated() {
     this.$root.$off(["sendData", "saveProfile", "editProfile"]);
@@ -309,10 +325,10 @@ body {
 
 @keyframes fadeInFadeOut {
   0% {
-    opacity: 1;
+    opacity: 0;
   }
   50% {
-    opacity: 0;
+    opacity: 0.5;
   }
   100% {
     opacity: 1;

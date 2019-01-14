@@ -58,7 +58,6 @@ export default {
 
 
 .pro-post 
-	background-color : #353B3F
 	font-family : 'Lato', sans-serif
 
 /* The card */

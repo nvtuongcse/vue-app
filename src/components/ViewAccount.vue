@@ -11,7 +11,7 @@
       <div class="posts" v-show="showPostList">
         <ul>
           <li v-for="post in profile.posts" v-bind:key="post.id">
-            <post :title="post.title" :content="post.content" :imgUrl="post.imgUrl"></post>
+            <post :title="post.title" :content="post.content" :imgUrl="post.imgUrl" :createdAt="post.createdAt"></post>
           </li>
         </ul>
       </div>
@@ -39,7 +39,7 @@
 <script>
 /*eslint-disable*/
 import Profile from "./Profile.vue";
-import Post from "./Post.vue";
+import Post from "./post/Post.vue";
 import axios from "axios";
 export default {
   name: "Account",
@@ -78,11 +78,11 @@ export default {
     async getAccoutData() {
       try {
         const res = await axios.post(
-          "http://localhost:3000/graphql",
+          "https://vue-app-bk-123.herokuapp.com/graphql",
           {
             query: `{ userQuery { profilePaginantion(filter: {_id: "${
               this.$router.history.current.params.profileId
-            }"}) { items { _id name decription fullName userId friends{_id name fullName userId} posts{_id title content} } } } }`
+            }"}) { items { _id name decription fullName userId friends{_id name fullName userId} posts{_id title content createdAt} } } } }`
           },
           {
             headers: {

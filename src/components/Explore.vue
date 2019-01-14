@@ -31,7 +31,7 @@ export default {
     async getData() {
       try {
         const res = await axios.post(
-          "http://localhost:3000/graphql",
+          "https://vue-app-bk-123.herokuapp.com/graphql",
           {
             query:
               "{userQuery {postPaginantion(sort: CREATEDAT_DESC) {items {_id title imgUrl decription content pravicy updatedAt createdAt}}}}"

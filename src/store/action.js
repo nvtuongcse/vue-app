@@ -4,7 +4,7 @@ import axios from "axios";
 export default {
   async signUp({ state }, { email, password, router, ls, toast }) {
     try {
-      const res = await axios.post("http://localhost:3000/graphql", {
+      const res = await axios.post("https://vue-app-bk-123.herokuapp.com/graphql", {
         query: `mutation{
             guestMutation{signUp(record: {
             email: "${email}",
@@ -29,7 +29,7 @@ export default {
   },
   async signIn({ state }, { email, password, router, ls, toast }) {
     try {
-      const res = await axios.post("http://localhost:3000/graphql", {
+      const res = await axios.post("https://vue-app-bk-123.herokuapp.com/graphql", {
         query: `mutation{
             guestMutation{signIn(
             email: "${email}",
@@ -57,7 +57,7 @@ export default {
     try {
       const { name, fullName, decription } = record;
       const res = await axios.post(
-        "http://localhost:3000/graphql",
+        "https://vue-app-bk-123.herokuapp.com/graphql",
         {
           query: `mutation{ userMutation{ profileUpdateOne(record: { name: "${name}" fullName: "${fullName}" decription: "${decription}" }){ recordId } }}`
         },

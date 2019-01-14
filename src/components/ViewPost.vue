@@ -53,7 +53,7 @@ export default {
     await this.getData();
     let channel = this.post._id;
     const postSocket = io.connect(
-      "localhost:3000/post",
+      "vue-app-bk-123.herokuapp.com/post",
       { forceNew: true }
     );
     this.postSocket = postSocket;
@@ -85,7 +85,7 @@ export default {
     async getData() {
       try {
         const res = await axios.post(
-          "http://localhost:3000/graphql",
+          "https://vue-app-bk-123.herokuapp.com/graphql",
           {
             query: `{ userQuery { postFindOne(filter: {_id: "${
               this.$router.history.current.params.postId

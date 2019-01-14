@@ -56,7 +56,7 @@ export default {
     async publish() {
       try {
         const res = await axios.post(
-          "http://localhost:3000/graphql",
+          "https://vue-app-bk-123.herokuapp.com/graphql",
           {
             query: `mutation{ userMutation{ postCreateOne(record: { title: "${
               this.title
