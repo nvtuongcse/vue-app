@@ -10,7 +10,7 @@ import NewPost from "./components/NewPost.vue";
 import FindFriends from "./components/FindFriends.vue";
 import ViewAccount from "./components/ViewAccount.vue";
 import ViewPost from "./components/ViewPost.vue";
-import Post from "./components/post/ViewPost";
+import WorkBook from "./components/xlsx/workbook.vue";
 import store from "./store";
 import VueLS from "vue-localstorage";
 import VueToasted from "vue-toasted";
@@ -35,7 +35,7 @@ try {
 
 const router = new VueRouter({
   routes: [
-    { path: "/test", component: Post, meta: { requiresAuth: true } },
+    { path: "/test", component: WorkBook },
     { path: "/", component: Explore, meta: { requiresAuth: true } },
     { path: "/login", component: Login },
     {
