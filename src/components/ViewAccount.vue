@@ -78,7 +78,7 @@ export default {
     async getAccoutData() {
       try {
         const res = await axios.post(
-          "https://vue-app-bk-123.herokuapp.com/graphql",
+          "http://localhost:8000/graphql",
           {
             query: `{ userQuery { profilePaginantion(filter: {_id: "${
               this.$router.history.current.params.profileId

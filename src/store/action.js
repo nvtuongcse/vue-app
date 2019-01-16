@@ -28,6 +28,7 @@ export default {
     }
   },
   async signIn({ state }, { email, password, router, ls, toast }) {
+    console.log(process.env)
     try {
       const res = await axios.post("https://vue-app-bk-123.herokuapp.com/graphql", {
         query: `mutation{
