@@ -34,7 +34,7 @@ export default {
           "https://vue-app-bk-123.herokuapp.com/graphql",
           {
             query:
-              "{userQuery {postPaginantion(sort: CREATEDAT_DESC) {items {_id title imgUrl decription content pravicy updatedAt createdAt}}}}"
+              "{userQuery {postPaginantion(filter:{ pravicy:public } sort: CREATEDAT_DESC) {items {_id title imgUrl decription content pravicy updatedAt createdAt}}}}"
           },
           {
             headers: {

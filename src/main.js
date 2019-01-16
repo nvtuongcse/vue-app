@@ -1,4 +1,5 @@
 /* eslint-disable */
+require('dotenv').config();
 import Vue from "vue";
 import App from "./App.vue";
 import VueRouter from "vue-router";
@@ -14,9 +15,8 @@ import Post from "./components/post/ViewPost";
 import store from "./store";
 import VueLS from "vue-localstorage";
 import VueToasted from "vue-toasted";
-const JWTSECRETKEY = "vueappjwtkey";
 
-
+const JWTSECRETKEY = "vueappjwtkey"
 
 Vue.config.productionTip = false;
 Vue.use(VueToasted, {
@@ -27,7 +27,7 @@ Vue.use(VueLS);
 
 const user = Vue.localStorage.get("user", { token: null }, Object);
 try {
-  jwt.verify(user.token, JWTSECRETKEY);
+  jwt.verify(user.token, JWTSECRETKEY );
   store.state.user = user;
 } catch (error) {
   store.state.user = { token: null };
